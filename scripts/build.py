@@ -142,8 +142,8 @@ open(f'{OUT}/__forms.html', 'w', encoding='utf-8').write('''<!doctype html><html
   <input type="text" name="agb">
   <input type="text" name="naam">
   <input type="text" name="ondertekend_op">
-  <input type="text" name="ip">
-  <input type="text" name="user_agent">
+  <input type="text" name="ip_ondertekenaar">
+  <input type="text" name="browser_ondertekenaar">
   <input type="text" name="pdf_link">
   <input type="text" name="token">
   <input type="file" name="pdf" hidden>

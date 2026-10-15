@@ -42,7 +42,7 @@ export default async (req: Request, context: Context) => {
     "form-name": "ondertekening", "bot-field": "",
     praktijk: g.praktijk, overeenkomst: SOORTEN[l.soort],
     adres: `${g.straat}, ${g.postcode} ${g.plaats}`, kvk: g.kvk, agb: g.agb, naam: g.naam,
-    ondertekend_op: tijd, ip, user_agent: ua, pdf_link: pdfLink, token: t,
+    ondertekend_op: tijd, ip_ondertekenaar: ip, browser_ondertekenaar: ua, pdf_link: pdfLink, token: t,
   });
   try {
     const r = await fetch(`${origin}/__forms.html`, { method: "POST", headers: { "content-type": "application/x-www-form-urlencoded" }, body: velden.toString() });
