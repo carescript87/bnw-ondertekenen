@@ -1,0 +1,14 @@
+{
+  "name": "bnw-ondertekenen",
+  "private": true,
+  "version": "2.0.0",
+  "description": "Digitaal ondertekenen van de leden- en kennismakersovereenkomst van BNW",
+  "type": "module",
+  "scripts": {
+    "build": "python3 scripts/build.py"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^8.2.0",
+    "@netlify/functions": "^3.1.10"
+  }
+}

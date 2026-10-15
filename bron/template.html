@@ -1,0 +1,519 @@
+<title>__TITLE__</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,700;6..12,900&display=swap">
+<style>
+/* Layout: één leeskolom op wit, als een document. Bovenaan het logo en drie stappen;
+   daarna gegevens, de volledige overeenkomst en het ondertekenblok. BNW-huisstijl,
+   bewust alleen licht: het kleurenlogo en de handtekening vragen een witte ondergrond. */
+:root {
+  color-scheme: light;
+  --wit: #FFFFFF;
+  --zacht: #E2F0FE;
+  --accent: #98CAF5;
+  --diepblauw: #0444A3;
+  --marine: #001692;
+  --knop: #1E73BE;
+  --knop-donker: #0444A3;
+  --inkt: #52525E;
+  --grijs: #616161;
+  --fout: #B3261E;
+  --fout-zacht: #FCEEEC;
+  --font: "Nunito Sans", Arial, Helvetica, sans-serif;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--wit); color: var(--inkt);
+  font: 400 16px/1.5 var(--font);
+  padding-inline: 20px; padding-block: 32px 72px;
+}
+.kolom { max-width: 720px; margin-inline: auto; display: flex; flex-direction: column; gap: 48px; }
+.kop { display: flex; flex-direction: column; gap: 20px; }
+.logo { width: 260px; max-width: 100%; height: auto; display: block; }
+h1, h2, h3 {
+  font-family: var(--font); font-weight: 900; text-transform: uppercase;
+  color: var(--diepblauw); margin: 0; text-wrap: balance;
+}
+h1 { font-size: clamp(24px, 6.2vw, 32px); line-height: 1.2; letter-spacing: .25px; overflow-wrap: anywhere; }
+h2 { font-size: 22px; line-height: 1.3; letter-spacing: .5px; padding-bottom: 10px; border-bottom: 3px solid var(--diepblauw); }
+h3 { font-size: 16px; line-height: 1.3; margin-top: 18px; }
+p { margin: 0; }
+.intro { max-width: 62ch; }
+.stappen { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.stappen li { background: var(--zacht); padding: 14px 16px; color: var(--diepblauw); min-width: 0; }
+.stappen b { display: block; font-weight: 900; font-size: 22px; line-height: 1.1; }
+@media (max-width: 560px) { .stappen { grid-template-columns: 1fr; } }
+
+section { display: flex; flex-direction: column; gap: 20px; }
+.hulp { color: var(--grijs); font-size: 14px; }
+
+/* Formulier */
+.velden { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 20px; }
+.veld { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.veld.breed { grid-column: 1 / -1; }
+@media (max-width: 560px) { .velden { grid-template-columns: 1fr; } }
+label { font-weight: 700; color: var(--diepblauw); font-size: 15px; }
+input[type=text] {
+  font: 400 16px/1.3 var(--font); color: var(--marine); background: var(--wit);
+  border: 1px solid var(--grijs); border-radius: 0; padding: 12px 12px; width: 100%;
+}
+input[type=text]::placeholder { color: var(--grijs); opacity: .75; }
+input:focus-visible, button:focus-visible, canvas:focus-visible, a:focus-visible {
+  outline: 3px solid var(--knop); outline-offset: 2px;
+}
+.veld.fout input, .tekenvlak.fout { border-color: var(--fout); border-width: 2px; }
+.melding { color: var(--fout); font-size: 14px; font-weight: 700; }
+
+.gegevens { margin: 0; display: grid; grid-template-columns: minmax(140px, 220px) 1fr; gap: 0; border-top: 1px solid var(--zacht); }
+.gegevens dt, .gegevens dd { margin: 0; padding: 10px 0; border-bottom: 1px solid var(--zacht); min-width: 0; overflow-wrap: anywhere; }
+.gegevens dt { font-weight: 700; color: var(--diepblauw); font-size: 15px; padding-right: 16px; }
+.gegevens dd { color: var(--marine); }
+@media (max-width: 480px) { .gegevens { grid-template-columns: 1fr; } .gegevens dt { border-bottom: 0; padding-bottom: 0; } .gegevens dd { padding-top: 2px; } }
+
+.mail { font-weight: 700; color: var(--diepblauw); user-select: all; }
+
+/* Overeenkomst */
+.akte { display: flex; flex-direction: column; gap: 10px; font-size: 15px; max-width: 70ch; }
+.akte .cap { font-weight: 900; color: var(--diepblauw); margin-top: 14px; letter-spacing: .3px; }
+.akte .li { display: grid; grid-template-columns: 2.2em 1fr; }
+.akte .li > :last-child { min-width: 0; }
+.akte .lvl1 { margin-left: 2.2em; }
+.akte b { font-weight: 700; color: var(--marine); }
+.akte .inv { background: var(--zacht); color: var(--marine); padding: 1px 5px; overflow-wrap: anywhere; }
+.akte .inv.leeg { color: var(--grijs); font-style: italic; }
+.partij { border-left: 4px solid var(--accent); padding-left: 16px; display: flex; flex-direction: column; gap: 6px; }
+a { color: var(--diepblauw); text-decoration: underline; }
+
+/* Ondertekening */
+.tekenen { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 32px; align-items: start; }
+@media (max-width: 640px) { .tekenen { grid-template-columns: 1fr; } }
+.partijblok { display: flex; flex-direction: column; gap: 8px; min-width: 0; font-size: 15px; }
+.partijblok .rol { font-weight: 900; text-transform: uppercase; color: var(--diepblauw); letter-spacing: .3px; }
+.partijblok .naam { font-weight: 700; color: var(--marine); overflow-wrap: anywhere; }
+.coop-sig { width: 200px; max-width: 100%; height: auto; display: block; }
+.tekenvlak {
+  position: relative; border: 1px solid var(--grijs); background: var(--wit);
+  height: 180px; width: 100%;
+}
+.tekenvlak canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: crosshair; display: block; }
+.tekenvlak::after {
+  content: ""; position: absolute; left: 16px; right: 16px; bottom: 44px;
+  border-bottom: 1px dashed var(--accent); pointer-events: none;
+}
+.tekenvlak .wenk {
+  position: absolute; left: 16px; bottom: 16px; color: var(--grijs); font-size: 13px; pointer-events: none;
+}
+.rij { display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: center; }
+.akkoord { display: grid; grid-template-columns: 24px 1fr; gap: 12px; align-items: start; background: var(--zacht); padding: 16px; }
+.akkoord input { width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--diepblauw); }
+.akkoord label { font-weight: 400; color: var(--marine); }
+.akkoord.fout { outline: 2px solid var(--fout); }
+button {
+  font: 700 15px/1.2 var(--font); border-radius: 0; cursor: pointer;
+  padding: 13px 29px; border: 2px solid var(--knop); background: var(--knop); color: var(--wit);
+}
+button:hover { background: var(--knop-donker); border-color: var(--knop-donker); }
+button.stil { background: var(--wit); color: var(--diepblauw); border-color: var(--diepblauw); padding: 8px 16px; font-size: 14px; }
+button.stil:hover { background: var(--zacht); }
+button[disabled] { opacity: .55; cursor: default; }
+.status { padding: 16px 18px; border-left: 4px solid var(--diepblauw); background: var(--zacht); color: var(--marine); display: flex; flex-direction: column; gap: 6px; }
+.status.fout { border-left-color: var(--fout); background: var(--fout-zacht); color: var(--fout); }
+.status strong { font-weight: 900; }
+footer { border-top: 1px solid var(--zacht); padding-top: 16px; color: var(--grijs); font-size: 13px; }
+@media (prefers-reduced-motion: no-preference) { button { transition: background-color .15s, border-color .15s; } }
+</style>
+
+<div class="kolom">
+  <header class="kop" id="kop">
+    <img class="logo" src="__LOGO__" alt="BNW beweegt de zorg">
+    <h1>__H1__</h1>
+    <p class="intro">Met dit formulier sluit u de overeenkomst met BNW digitaal af. BNW heeft de gegevens van uw praktijk al ingevuld. U controleert ze, leest de overeenkomst en zet uw handtekening. Daarna slaat u de ondertekende overeenkomst op als pdf.</p>
+    <ol class="stappen">
+      <li><b>1</b>Controleer uw gegevens</li>
+      <li><b>2</b>Lees de overeenkomst</li>
+      <li><b>3</b>Onderteken en sla op</li>
+    </ol>
+  </header>
+
+  <div class="status fout" id="ongeldig" hidden>
+    <strong>Deze link is niet compleet.</strong>
+    <span>Open de link precies zoals u hem van BNW heeft ontvangen. Werkt hij dan nog niet, vraag dan een nieuwe link aan via <b class="mail">administratie@bnw.nl</b>.</span>
+  </div>
+
+  <div class="status fout" id="verlopen" hidden>
+    <strong>Deze link is verlopen.</strong>
+    <span>Een ondertekenlink is vijf werkdagen geldig. Vraag een nieuwe link aan via <b class="mail">administratie@bnw.nl</b>.</span>
+  </div>
+
+  <form id="formulier" novalidate>
+    <div class="kolom">
+      <section aria-labelledby="k1">
+        <h2 id="k1">1. Uw gegevens</h2>
+        <dl class="gegevens" id="gegevens"></dl>
+        <p class="hulp">Klopt er iets niet? Onderteken dan niet en mail naar <b class="mail">administratie@bnw.nl</b>. U ontvangt een nieuwe link. <span id="geldig"></span></p>
+      </section>
+
+      <section aria-labelledby="k2">
+        <h2 id="k2">2. De overeenkomst</h2>
+        <div class="akte" id="akte"></div>
+      </section>
+
+      <section aria-labelledby="k3">
+        <h2 id="k3">3. Ondertekening</h2>
+        <p>Aldus overeengekomen op <b id="datum"></b></p>
+        <div class="tekenen">
+          <div class="partijblok">
+            <span class="rol">Coöperatie</span>
+            <span class="naam" id="coopnaam"></span>
+            <span>Ten deze rechtsgeldig vertegenwoordigd door E.I.M. Kunst-Verberne</span>
+            <span>Handtekening:</span>
+            <img class="coop-sig" id="coopsig" src="__SIG__" alt="Handtekening namens de Coöperatie">
+          </div>
+          <div class="partijblok">
+            <span class="rol" id="rol"></span>
+            <span class="naam" id="sigpraktijk"></span>
+            <span>Ten deze rechtsgeldig vertegenwoordigd door <span id="signaam"></span></span>
+            <span id="siglabel">Handtekening:</span>
+            <div class="tekenvlak" id="tekenvlak">
+              <canvas id="canvas" tabindex="0" role="img" aria-labelledby="siglabel"></canvas>
+              <span class="wenk" id="wenk">Teken hier met uw vinger, pen of muis</span>
+            </div>
+            <div class="rij">
+              <button type="button" class="stil" id="wis">Wis handtekening</button>
+              <span class="melding" id="sigfout" hidden>Zet eerst uw handtekening.</span>
+            </div>
+          </div>
+        </div>
+        <div class="akkoord" id="akkoordblok">
+          <input type="checkbox" id="akkoord">
+          <label for="akkoord">Ik heb de overeenkomst gelezen en ga namens de praktijk akkoord. Ik ben bevoegd om de praktijk te vertegenwoordigen.</label>
+        </div>
+        <div class="rij">
+          <button type="submit" id="verstuur">Onderteken en sla op als pdf</button>
+        </div>
+        <div class="status" id="status" role="status" aria-live="polite" hidden></div>
+      </section>
+    </div>
+  </form>
+
+  <footer>BNW, het paramedisch platform voor Noordwest-Nederland · bnw.nl · administratie@bnw.nl</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  var DOC = __DATA__;
+  var LOGO = document.querySelector(".logo").src;
+  var COOPSIG = document.getElementById("coopsig").src;
+  var KEY = "bnw-concept-" + DOC.file;
+  var VELDEN = ["praktijk", "straat", "postcode", "plaats", "kvk", "agb", "naam"];
+  var LEEG = {
+    praktijk: "naam van uw praktijk", straat: "straat en huisnummer", postcode: "postcode",
+    plaats: "plaats", kvk: "KVK-nummer", agb: "AGB-code", naam: "uw naam"
+  };
+  var $ = function (id) { return document.getElementById(id); };
+  var el = function (tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  };
+
+  /* ---------- waarden ---------- */
+  /* BNW vult de gegevens vooraf in; ze reizen mee als code achter het # in de link. */
+  function leesCode() {
+    try {
+      var h = location.hash.replace(/^#/, "");
+      if (!h) return null;
+      var b = atob(h.replace(/-/g, "+").replace(/_/g, "/"));
+      var bytes = new Uint8Array(b.length);
+      for (var i = 0; i < b.length; i++) bytes[i] = b.charCodeAt(i);
+      var a = JSON.parse(new TextDecoder().decode(bytes));
+      if (!Array.isArray(a) || a.length !== VELDEN.length + 1 || !/^\d{4}-\d{2}-\d{2}$/.test(a[VELDEN.length])) return null;
+      var v = {};
+      for (var j = 0; j < VELDEN.length; j++) {
+        if (typeof a[j] !== "string" || !a[j].trim() || a[j].length > 120) return null;
+        v[VELDEN[j]] = a[j].trim().replace(/\s+/g, " ");
+      }
+      v.tot = a[VELDEN.length];
+      return v;
+    } catch (e) { return null; }
+  }
+  var V = leesCode();
+  function isoVandaag() { var d = new Date(); return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+  function totTekst(iso) { var p = iso.split("-"); return (+p[2]) + " " + MAANDEN[+p[1] - 1] + " " + p[0]; }
+  function verlopen() { return !!V && isoVandaag() > V.tot; }
+  function waarden() { return V; }
+  var vandaag = new Date();
+  var MAANDEN = ["januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december"];
+  function datumTekst(d) { return d.getDate() + " " + MAANDEN[d.getMonth()] + " " + d.getFullYear(); }
+
+  /* De blokken van partij 2, opgebouwd uit de ingevulde velden. f = veldnaam. */
+  function partij() {
+    return [
+      { k: "li", m: "2.", lvl: 0, runs: [{ f: "praktijk", b: true }] },
+      { k: "p", lvl: 0, runs: [["Gevestigd te ", ""], { f: "plaats" }, [", ", ""], { f: "straat" }, [", ", ""], { f: "postcode" }] },
+      { k: "p", lvl: 0, runs: [["Ingeschreven in het handelsregister bij de Kamer van Koophandel onder nummer ", ""], { f: "kvk" }] },
+      { k: "p", lvl: 0, runs: [["Ingeschreven in het AGB-register onder nummer ", ""], { f: "agb" }] },
+      { k: "p", lvl: 0, runs: [["Ten deze rechtsgeldig vertegenwoordigd door ", ""], { f: "naam" }] },
+      { k: "p", lvl: 0, runs: DOC.noemen }
+    ];
+  }
+
+  /* ---------- overeenkomst op de pagina ---------- */
+  var invulplekken = [];
+  function runsNaarDom(runs, doel) {
+    runs.forEach(function (r) {
+      if (Array.isArray(r)) {
+        var tag = r[1].indexOf("b") >= 0 ? "b" : r[1].indexOf("i") >= 0 ? "em" : "span";
+        doel.appendChild(el(tag, null, r[0]));
+      } else {
+        var s = el(r.b ? "b" : "span", "inv");
+        s.dataset.f = r.f;
+        invulplekken.push(s);
+        doel.appendChild(s);
+      }
+    });
+  }
+  function blokNaarDom(b) {
+    if (b.k === "h") { var h = el("h3"); runsNaarDom(b.runs.map(function (r) { return [r[0], ""]; }), h); return h; }
+    if (b.k === "cap") { var c = el("p", "cap"); runsNaarDom(b.runs.map(function (r) { return [r[0], ""]; }), c); return c; }
+    if (b.k === "li") {
+      var d = el("div", "li" + (b.lvl ? " lvl1" : ""));
+      d.appendChild(el("span", null, b.m));
+      var t = el("span"); runsNaarDom(b.runs, t); d.appendChild(t);
+      return d;
+    }
+    var p = el("p", b.lvl ? "lvl1" : null); runsNaarDom(b.runs, p); return p;
+  }
+  function bouwAkte() {
+    var akte = $("akte");
+    DOC.pre.forEach(function (b) { akte.appendChild(blokNaarDom(b)); });
+    var pb = el("div", "partij");
+    partij().forEach(function (b) { pb.appendChild(blokNaarDom(b)); });
+    akte.appendChild(pb);
+    DOC.post.forEach(function (b) { akte.appendChild(blokNaarDom(b)); });
+  }
+  function ververs() {
+    var v = waarden();
+    invulplekken.forEach(function (s) {
+      var w = v[s.dataset.f];
+      s.textContent = w || LEEG[s.dataset.f];
+      s.classList.toggle("leeg", !w);
+    });
+    $("sigpraktijk").textContent = v.praktijk || "Naam van uw praktijk";
+    $("signaam").textContent = v.naam || "uw naam";
+    var dl = $("gegevens"); dl.textContent = "";
+    [["Praktijk", v.praktijk], ["Adres", v.straat + ", " + v.postcode + " " + v.plaats], ["KVK-nummer", v.kvk],
+     ["AGB-code praktijk", v.agb], ["Vertegenwoordigd door", v.naam]].forEach(function (r) {
+      dl.appendChild(el("dt", null, r[0])); dl.appendChild(el("dd", null, r[1]));
+    });
+  }
+
+  /* ---------- handtekening ---------- */
+  var canvas = $("canvas"), ctx = canvas.getContext("2d");
+  var halen = [], huidig = null;
+  function maat() {
+    var r = canvas.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    if (!r.width) return;
+    canvas.width = Math.round(r.width * dpr); canvas.height = Math.round(r.height * dpr);
+    teken(ctx, canvas.width, canvas.height, 2.2 * dpr);
+  }
+  /* Punten staan genormaliseerd (0..1), zodat de handtekening meeschaalt. */
+  function teken(c, w, h, dikte) {
+    c.clearRect(0, 0, w, h);
+    c.lineCap = "round"; c.lineJoin = "round"; c.strokeStyle = "#001692"; c.fillStyle = "#001692"; c.lineWidth = dikte;
+    halen.forEach(function (s) {
+      if (s.length === 1) { c.beginPath(); c.arc(s[0][0] * w, s[0][1] * h, dikte / 2, 0, 6.3); c.fill(); return; }
+      c.beginPath(); c.moveTo(s[0][0] * w, s[0][1] * h);
+      for (var i = 1; i < s.length - 1; i++) {
+        var mx = (s[i][0] + s[i + 1][0]) / 2 * w, my = (s[i][1] + s[i + 1][1]) / 2 * h;
+        c.quadraticCurveTo(s[i][0] * w, s[i][1] * h, mx, my);
+      }
+      var l = s[s.length - 1]; c.lineTo(l[0] * w, l[1] * h); c.stroke();
+    });
+  }
+  function punt(e) {
+    var r = canvas.getBoundingClientRect();
+    return [Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)), Math.min(1, Math.max(0, (e.clientY - r.top) / r.height))];
+  }
+  function getekend() { return halen.reduce(function (n, s) { return n + s.length; }, 0) >= 6; }
+  canvas.addEventListener("pointerdown", function (e) {
+    e.preventDefault();
+    try { canvas.setPointerCapture(e.pointerId); } catch (x) {}
+    huidig = [punt(e)]; halen.push(huidig);
+    $("wenk").hidden = true; $("sigfout").hidden = true; $("tekenvlak").classList.remove("fout");
+    maatOfTeken();
+  });
+  canvas.addEventListener("pointermove", function (e) {
+    if (!huidig) return;
+    e.preventDefault(); huidig.push(punt(e)); maatOfTeken();
+  });
+  ["pointerup", "pointercancel"].forEach(function (n) {
+    canvas.addEventListener(n, function () { huidig = null; });
+  });
+  function maatOfTeken() { teken(ctx, canvas.width, canvas.height, 2.2 * (window.devicePixelRatio || 1)); }
+  $("wis").addEventListener("click", function () { halen = []; huidig = null; $("wenk").hidden = false; maatOfTeken(); });
+  window.addEventListener("resize", maat);
+  function handtekeningPng() {
+    var r = canvas.getBoundingClientRect(), w = 1000, h = Math.round(1000 * r.height / r.width);
+    var c = document.createElement("canvas"); c.width = w; c.height = h;
+    var x = c.getContext("2d");
+    teken(x, w, h, 2.2 * w / r.width);
+    var schoon = document.createElement("canvas"); schoon.width = w; schoon.height = h;
+    var y = schoon.getContext("2d"); y.fillStyle = "#FFFFFF"; y.fillRect(0, 0, w, h); y.drawImage(c, 0, 0);
+    return { data: schoon.toDataURL("image/png"), ratio: h / w };
+  }
+
+  /* ---------- controle ---------- */
+  function controleer() {
+    var eerste = null;
+    var sigOk = getekend();
+    $("sigfout").hidden = sigOk; $("tekenvlak").classList.toggle("fout", !sigOk);
+    if (!sigOk) eerste = canvas;
+    var ak = $("akkoord").checked;
+    $("akkoordblok").classList.toggle("fout", !ak);
+    if (!ak && !eerste) eerste = $("akkoord");
+    return eerste;
+  }
+
+  /* ---------- pdf ---------- */
+  function maakPdf(v, sig, nu) {
+    var pdf = new window.jspdf.jsPDF({ unit: "mm", format: "a4", compress: true });
+    var L = 22, R = 188, B = 272, y = 20, PT = 0.3528;
+    function font(f) { pdf.setFont("helvetica", f.indexOf("b") >= 0 ? "bold" : f.indexOf("i") >= 0 ? "italic" : "normal"); }
+    function ruimte(h) { if (y + h > B) { pdf.addPage(); y = 22; } }
+    function vlak(runs) {
+      return runs.map(function (r) { return Array.isArray(r) ? r : [v[r.f], r.b ? "b" : ""]; });
+    }
+    /* Zet opgemaakte tekst met woordafbreking; vet en cursief blijven per woord behouden. */
+    function tekst(runs, x, grootte, kleur) {
+      var maxW = R - x, lh = grootte * PT * 1.42, woorden = [];
+      pdf.setFontSize(grootte);
+      vlak(runs).forEach(function (r) {
+        r[0].split(/(\s+)/).forEach(function (d) {
+          if (!d) return;
+          if (/^\s+$/.test(d)) { if (woorden.length) woorden[woorden.length - 1].sp = true; return; }
+          font(r[1]);
+          var vorig = woorden[woorden.length - 1];
+          woorden.push({ t: d, f: r[1], w: pdf.getTextWidth(d), plak: !!vorig && !vorig.sp });
+        });
+      });
+      font(""); var sp = pdf.getTextWidth(" ");
+      var regel = [], breedte = 0;
+      function spoel() {
+        if (!regel.length) return;
+        ruimte(lh);
+        var cx = x; pdf.setTextColor.apply(pdf, kleur || [40, 40, 50]);
+        regel.forEach(function (w, i) {
+          if (i && !w.plak) cx += sp;
+          font(w.f); pdf.text(w.t, cx, y + grootte * PT * 0.8); cx += w.w;
+        });
+        y += lh; regel = []; breedte = 0;
+      }
+      woorden.forEach(function (w) {
+        var extra = (regel.length && !w.plak ? sp : 0) + w.w;
+        if (regel.length && !w.plak && breedte + extra > maxW) { spoel(); extra = w.w; }
+        regel.push(w); breedte += extra;
+      });
+      spoel();
+    }
+    function blok(b) {
+      var x = L + (b.lvl ? 8 : 0);
+      if (b.k === "h") { y += 3; ruimte(18); tekst(b.runs.map(function (r) { return [r[0], "b"]; }), L, 11, [4, 68, 163]); y += 1; return; }
+      if (b.k === "cap") { y += 3; ruimte(16); tekst(b.runs.map(function (r) { return [r[0], "b"]; }), L, 10, [4, 68, 163]); y += 1; return; }
+      if (b.k === "li") {
+        ruimte(5); pdf.setFontSize(10); font(""); pdf.setTextColor(40, 40, 50);
+        pdf.text(b.m === "•" ? "•" : b.m, x, y + 10 * PT * 0.8);
+        tekst(b.runs, x + 8, 10); y += 1.4; return;
+      }
+      tekst(b.runs, x, 10); y += 1.4;
+    }
+
+    pdf.addImage(LOGO, "PNG", L, y, 62, 62 * DOC.logoRatio); y += 62 * DOC.logoRatio + 10;
+    tekst([[DOC.title, "b"]], L, 17, [4, 68, 163]); y += 3;
+    DOC.pre.forEach(blok); partij().forEach(blok); DOC.post.forEach(blok);
+
+    y += 5; ruimte(92);
+    tekst([["Aldus overeengekomen op ", ""], [datumTekst(nu), "b"]], L, 10); y += 5;
+    tekst([["Coöperatie:", "b"]], L, 10, [4, 68, 163]);
+    tekst([[DOC.coop, ""]], L, 10);
+    tekst([["Ten deze rechtsgeldig vertegenwoordigd door E.I.M. Kunst-Verberne", ""]], L, 10);
+    tekst([["Handtekening:", ""]], L, 10);
+    pdf.addImage(COOPSIG, "PNG", L, y, 42, 42 * DOC.sigRatio); y += 42 * DOC.sigRatio + 6;
+    var sh = Math.min(30, 60 * sig.ratio), sw = sh / sig.ratio;
+    ruimte(30 + sh);
+    tekst([[DOC.rol + ":", "b"]], L, 10, [4, 68, 163]);
+    tekst([[v.praktijk, "b"]], L, 10);
+    tekst([["Ten deze rechtsgeldig vertegenwoordigd door " + v.naam, ""]], L, 10);
+    tekst([["Handtekening:", ""]], L, 10);
+    pdf.addImage(sig.data, "PNG", L, y, sw, sh); y += sh + 3;
+    var uur = ("0" + nu.getHours()).slice(-2) + ":" + ("0" + nu.getMinutes()).slice(-2);
+    tekst([["Digitaal ondertekend op " + datumTekst(nu) + " om " + uur + " uur via het online ondertekenformulier van BNW.", "i"]], L, 8, [97, 97, 97]);
+
+    var n = pdf.getNumberOfPages();
+    for (var i = 1; i <= n; i++) {
+      pdf.setPage(i); pdf.setFontSize(8); font(""); pdf.setTextColor(97, 97, 97);
+      pdf.setDrawColor(226, 240, 254); pdf.line(L, 281, R, 281);
+      var links = pdf.splitTextToSize(DOC.short + " BNW · " + v.praktijk, 130)[0];
+      pdf.text(links, L, 286);
+      pdf.text("Pagina " + i + " van " + n, R, 286, { align: "right" });
+    }
+    return pdf.output("blob");
+  }
+
+  /* ---------- opslaan ---------- */
+  function toon(tekst, kop, isFout) {
+    var s = $("status"); s.textContent = ""; s.classList.toggle("fout", !!isFout);
+    if (kop) s.appendChild(el("strong", null, kop));
+    tekst.forEach(function (t) { s.appendChild(el("span", null, t)); });
+    s.hidden = false;
+  }
+  var bezig = false;
+  var opslaan = (window.claude && window.claude.use) ? window.claude.use("downloads") : Promise.resolve(null);
+  $("formulier").addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (bezig) return;
+    if (verlopen()) { $("formulier").hidden = true; $("verlopen").hidden = false; $("verlopen").scrollIntoView({ block: "center" }); return; }
+    var v = waarden(), eerste = controleer(v);
+    if (eerste) {
+      toon(["Zet uw handtekening en vink aan dat u akkoord gaat."], "U bent nog niet klaar.", true);
+      eerste.focus(); eerste.scrollIntoView({ block: "center" });
+      return;
+    }
+    if (!window.jspdf) { toon(["Herlaad de pagina en probeer het opnieuw."], "De pdf kon niet worden gemaakt.", true); return; }
+    bezig = true; $("verstuur").disabled = true;
+    toon(["Uw pdf wordt gemaakt. Bevestig daarna het opslaan."], null, false);
+    var naam = DOC.file + "-" + (v.praktijk.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 50) || "praktijk") + ".pdf";
+    var blob;
+    try { blob = maakPdf(v, handtekeningPng(), new Date()); }
+    catch (x) { klaar(); toon(["Herlaad de pagina en probeer het opnieuw."], "De pdf kon niet worden gemaakt.", true); return; }
+    opslaan.then(function (dl) {
+      if (!dl) throw { code: "unavailable" };
+      return dl.save({ filename: naam, data: blob });
+    }).then(function () {
+      klaar();
+      toon(["Stuur de pdf nu per e-mail naar administratie@bnw.nl. BNW ontvangt de overeenkomst pas wanneer u dat doet.", "Bestandsnaam: " + naam], "Uw ondertekende overeenkomst is opgeslagen.", false);
+    }).catch(function (err) {
+      klaar();
+      var c = err && err.code;
+      if (c === "declined") toon(["Kies opnieuw ‘Onderteken en sla op als pdf’ en bevestig het opslaan."], "De pdf is niet opgeslagen.", true);
+      else if (c === "rate_limited") toon(["Wacht een moment en probeer het opnieuw."], "Er staat nog een opslagvenster open.", true);
+      else toon(["Open deze link in een gewone browser op uw computer en onderteken daar. Lukt het ook dan niet, mail dan naar administratie@bnw.nl."], "Opslaan lukt niet in deze weergave.", true);
+    });
+  });
+  function klaar() { bezig = false; $("verstuur").disabled = false; }
+
+  /* ---------- start ---------- */
+  if (!V) { $("formulier").hidden = true; $("ongeldig").hidden = false; return; }
+  if (verlopen()) { $("formulier").hidden = true; $("verlopen").hidden = false; return; }
+  $("geldig").textContent = "U kunt tot en met " + totTekst(V.tot) + " ondertekenen.";
+  $("datum").textContent = datumTekst(vandaag);
+  $("coopnaam").textContent = DOC.coop;
+  $("rol").textContent = DOC.rol;
+  bouwAkte();
+  $("akkoord").addEventListener("change", function () { $("akkoordblok").classList.remove("fout"); });
+  ververs(); maat();
+  if (window.ResizeObserver) new ResizeObserver(maat).observe(canvas);
+  window.__bnwTest = { maakPdf: maakPdf, zetHalen: function (h) { halen = h; $("wenk").hidden = true; maatOfTeken(); } };
+})();
+</script>

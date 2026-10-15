@@ -1,0 +1,211 @@
+<title>BNW Ondertekenlinks</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,700;6..12,900&display=swap">
+<style>
+/* Layout: één smalle werkkolom voor BNW-medewerkers. Bovenaan de keuze voor de overeenkomst,
+   dan de praktijkgegevens, onderaan de link die naar de praktijk gaat. BNW-huisstijl, alleen licht. */
+:root {
+  color-scheme: light;
+  --wit: #FFFFFF;
+  --zacht: #E2F0FE;
+  --accent: #98CAF5;
+  --diepblauw: #0444A3;
+  --marine: #001692;
+  --knop: #1E73BE;
+  --inkt: #52525E;
+  --grijs: #616161;
+  --fout: #B3261E;
+  --font: "Nunito Sans", Arial, Helvetica, sans-serif;
+}
+* { box-sizing: border-box; }
+body { background: var(--wit); color: var(--inkt); font: 400 16px/1.5 var(--font); padding-inline: 20px; padding-block: 32px 72px; }
+.kolom { max-width: 680px; margin-inline: auto; display: flex; flex-direction: column; gap: 40px; }
+.kop, section, form { display: flex; flex-direction: column; gap: 20px; }
+form { gap: 40px; }
+.logo { width: 220px; max-width: 100%; height: auto; display: block; }
+h1, h2 { font-weight: 900; text-transform: uppercase; color: var(--diepblauw); margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(24px, 6vw, 32px); line-height: 1.2; letter-spacing: .25px; }
+h2 { font-size: 20px; line-height: 1.3; letter-spacing: .5px; padding-bottom: 10px; border-bottom: 3px solid var(--diepblauw); }
+p { margin: 0; max-width: 62ch; }
+.hulp { color: var(--grijs); font-size: 14px; }
+.intern { align-self: flex-start; background: var(--diepblauw); color: var(--wit); font-weight: 700; font-size: 13px; padding: 4px 10px; letter-spacing: .4px; }
+fieldset { border: 0; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; min-width: 0; }
+legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.keuze { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: center; padding: 14px 16px; border: 1px solid var(--grijs); cursor: pointer; color: var(--marine); font-weight: 700; min-width: 0; overflow-wrap: anywhere; }
+.keuze:has(input:checked) { border: 2px solid var(--diepblauw); background: var(--zacht); padding: 13px 15px; }
+.keuze input { width: 20px; height: 20px; margin: 0; accent-color: var(--diepblauw); }
+.velden { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 20px; }
+.veld { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.veld.breed { grid-column: 1 / -1; }
+@media (max-width: 560px) { .velden, fieldset { grid-template-columns: 1fr; } }
+label.l { font-weight: 700; color: var(--diepblauw); font-size: 15px; }
+input[type=text], textarea {
+  font: 400 16px/1.4 var(--font); color: var(--marine); background: var(--wit);
+  border: 1px solid var(--grijs); border-radius: 0; padding: 12px; width: 100%;
+}
+textarea { resize: vertical; min-height: 110px; overflow-wrap: anywhere; font-size: 14px; }
+input::placeholder { color: var(--grijs); opacity: .75; }
+input:focus-visible, button:focus-visible, textarea:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid var(--knop); outline-offset: 2px; }
+.veld.fout input { border-color: var(--fout); border-width: 2px; }
+.melding { color: var(--fout); font-size: 14px; font-weight: 700; }
+.rij { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; }
+button { font: 700 15px/1.2 var(--font); border-radius: 0; cursor: pointer; padding: 13px 29px; border: 2px solid var(--knop); background: var(--knop); color: var(--wit); }
+button:hover { background: var(--diepblauw); border-color: var(--diepblauw); }
+button.stil { background: var(--wit); color: var(--diepblauw); border-color: var(--diepblauw); }
+button.stil:hover { background: var(--zacht); }
+a { color: var(--diepblauw); font-weight: 700; }
+.resultaat { background: var(--zacht); border-left: 4px solid var(--diepblauw); padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.resultaat strong { color: var(--marine); font-weight: 900; }
+.resultaat p { color: var(--marine); }
+details { border-top: 1px solid var(--zacht); padding-top: 14px; }
+summary { cursor: pointer; font-weight: 700; color: var(--diepblauw); }
+details .velden { margin-top: 16px; grid-template-columns: 1fr; }
+</style>
+
+<div class="kolom">
+  <header class="kop">
+    <img class="logo" src="__LOGO__" alt="BNW beweegt de zorg">
+    <span class="intern">Alleen voor BNW</span>
+    <h1>Ondertekenlink maken</h1>
+    <p>Vul de gegevens van de praktijk in en maak een persoonlijke link. De praktijk ziet via die link de ingevulde overeenkomst en hoeft alleen nog te ondertekenen.</p>
+  </header>
+
+  <form id="formulier" novalidate>
+    <section aria-labelledby="k1">
+      <h2 id="k1">1. Overeenkomst</h2>
+      <fieldset>
+        <legend>Kies de overeenkomst</legend>
+        <label class="keuze"><input type="radio" name="soort" id="soort-led" value="led" checked>Ledenovereenkomst</label>
+        <label class="keuze"><input type="radio" name="soort" id="soort-ken" value="ken">Kennismakersovereenkomst</label>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="k2">
+      <h2 id="k2">2. Gegevens van de praktijk</h2>
+      <div class="velden">
+        <div class="veld breed"><label class="l" for="praktijk">Naam van de praktijk</label><input type="text" id="praktijk" maxlength="120"></div>
+        <div class="veld breed"><label class="l" for="straat">Straat en huisnummer</label><input type="text" id="straat" maxlength="120"></div>
+        <div class="veld"><label class="l" for="postcode">Postcode</label><input type="text" id="postcode" placeholder="1234 AB" maxlength="7"></div>
+        <div class="veld"><label class="l" for="plaats">Plaats</label><input type="text" id="plaats" maxlength="80"></div>
+        <div class="veld"><label class="l" for="kvk">KVK-nummer</label><input type="text" id="kvk" inputmode="numeric" placeholder="8 cijfers" maxlength="8"></div>
+        <div class="veld"><label class="l" for="agb">AGB-code van de praktijk</label><input type="text" id="agb" inputmode="numeric" placeholder="8 cijfers" maxlength="8"></div>
+        <div class="veld breed"><label class="l" for="naam">Naam van de praktijkeigenaar die tekent</label><input type="text" id="naam" maxlength="120"></div>
+      </div>
+      <div class="rij">
+        <button type="submit">Maak link</button>
+        <button type="button" class="stil" id="leeg">Leeg formulier</button>
+      </div>
+    </section>
+
+    <section aria-labelledby="k3" id="uit" hidden>
+      <h2 id="k3">3. Link voor de praktijk</h2>
+      <div class="resultaat">
+        <strong id="voorwie"></strong>
+        <p id="geldig"></p>
+        <label class="l" for="link">Ondertekenlink</label>
+        <textarea id="link" readonly></textarea>
+        <div class="rij">
+          <button type="button" id="kopieer">Kopieer link</button>
+          <a id="open" href="#" target="_blank" rel="noopener">Bekijk wat de praktijk ziet</a>
+          <span id="gekopieerd" role="status" aria-live="polite"></span>
+        </div>
+        <p>Plak de link in uw e-mail aan de praktijk. Wijzigt u hierboven iets, maak dan een nieuwe link; de oude link blijft de oude gegevens tonen.</p>
+      </div>
+    </section>
+
+    <details>
+      <summary>Basislinks van de ondertekenformulieren</summary>
+      <div class="velden">
+        <p class="hulp">Hier staat de deellink van elk ondertekenformulier. Pas dit alleen aan als een formulier een nieuwe link heeft gekregen.</p>
+        <div class="veld"><label class="l" for="basis-led">Ledenovereenkomst</label><input type="text" id="basis-led" value="https://claude.ai/artifact/9qsEcVRCznNnaGeFkabdnS"></div>
+        <div class="veld"><label class="l" for="basis-ken">Kennismakersovereenkomst</label><input type="text" id="basis-ken" value="https://claude.ai/artifact/QCizTLDsxYgP4AzZELpHh3"></div>
+      </div>
+    </details>
+  </form>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var VELDEN = ["praktijk", "straat", "postcode", "plaats", "kvk", "agb", "naam"];
+  var NAAM = { led: "Ledenovereenkomst", ken: "Kennismakersovereenkomst" };
+  var $ = function (id) { return document.getElementById(id); };
+
+  function waarden() {
+    var v = {};
+    VELDEN.forEach(function (k) { v[k] = $(k).value.trim().replace(/\s+/g, " "); });
+    v.postcode = v.postcode.toUpperCase().replace(/^(\d{4})\s*([A-Z]{2})$/, "$1 $2");
+    return v;
+  }
+  function fout(id, tekst) {
+    var veld = $(id).closest(".veld"), m = veld.querySelector(".melding");
+    veld.classList.toggle("fout", !!tekst);
+    if (tekst) {
+      if (!m) { m = document.createElement("span"); m.className = "melding"; m.id = id + "-fout"; veld.appendChild(m); $(id).setAttribute("aria-describedby", m.id); }
+      m.textContent = tekst;
+    } else if (m) { m.remove(); $(id).removeAttribute("aria-describedby"); }
+    return !!tekst;
+  }
+  function controleer(v) {
+    var eerste = null;
+    var regels = {
+      praktijk: v.praktijk ? "" : "Vul de naam van de praktijk in.",
+      straat: /\d/.test(v.straat) ? "" : "Vul straat en huisnummer in.",
+      postcode: /^\d{4} [A-Z]{2}$/.test(v.postcode) ? "" : "Vul een postcode in, bijvoorbeeld 1234 AB.",
+      plaats: v.plaats ? "" : "Vul de plaats in.",
+      kvk: /^\d{8}$/.test(v.kvk) ? "" : "Een KVK-nummer bestaat uit 8 cijfers.",
+      agb: /^\d{8}$/.test(v.agb) ? "" : "Een AGB-code bestaat uit 8 cijfers.",
+      naam: v.naam ? "" : "Vul de naam van de praktijkeigenaar in."
+    };
+    VELDEN.forEach(function (k) { if (fout(k, regels[k]) && !eerste) eerste = $(k); });
+    return eerste;
+  }
+  /* De gegevens gaan als code achter het # in de link: alleen letters, cijfers, - en _. */
+  var WERKDAGEN = 5;
+  var DAGEN = ["zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag"];
+  var MAANDEN = ["januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december"];
+  /* Laatste dag waarop de link werkt: vandaag plus vijf werkdagen (zaterdag en zondag tellen niet mee). */
+  function geldigTot() {
+    var d = new Date(), n = 0;
+    while (n < WERKDAGEN) { d.setDate(d.getDate() + 1); if (d.getDay() !== 0 && d.getDay() !== 6) n++; }
+    return d;
+  }
+  function iso(d) { return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+  function code(v, tot) {
+    var bytes = new TextEncoder().encode(JSON.stringify(VELDEN.map(function (k) { return v[k]; }).concat([iso(tot)])));
+    var s = "";
+    for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+    return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  }
+
+  $("formulier").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var v = waarden(), eerste = controleer(v);
+    if (eerste) { $("uit").hidden = true; eerste.focus(); return; }
+    var soort = document.querySelector("input[name=soort]:checked").value;
+    var basis = $("basis-" + soort).value.trim().replace(/#.*$/, "");
+    var tot = geldigTot();
+    var link = basis + "#" + code(v, tot);
+    $("geldig").textContent = "Geldig tot en met " + DAGEN[tot.getDay()] + " " + tot.getDate() + " " + MAANDEN[tot.getMonth()] + " " + tot.getFullYear() + " (vijf werkdagen). Daarna toont de link alleen dat hij verlopen is.";
+    $("link").value = link;
+    $("open").href = link;
+    $("voorwie").textContent = NAAM[soort] + " voor " + v.praktijk;
+    $("gekopieerd").textContent = "";
+    $("uit").hidden = false;
+    $("uit").scrollIntoView({ block: "nearest" });
+  });
+  $("kopieer").addEventListener("click", function () {
+    var t = $("link");
+    function geselecteerd() { t.focus(); t.select(); $("gekopieerd").textContent = "Kopiëren lukte niet automatisch. De link is geselecteerd: kopieer hem met Ctrl+C of Cmd+C."; }
+    try {
+      navigator.clipboard.writeText(t.value).then(function () { $("gekopieerd").textContent = "Gekopieerd"; }, geselecteerd);
+    } catch (x) { geselecteerd(); }
+  });
+  $("leeg").addEventListener("click", function () {
+    VELDEN.forEach(function (k) { $(k).value = ""; fout(k, ""); });
+    $("uit").hidden = true; $("praktijk").focus();
+  });
+  VELDEN.forEach(function (k) {
+    $(k).addEventListener("input", function () { if ($(k).closest(".veld").classList.contains("fout")) fout(k, ""); });
+  });
+})();
+</script>

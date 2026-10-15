@@ -1,0 +1,36 @@
+const { chromium } = require('/tmp/claude-0/-home-claude/dec09c9d-145b-5323-8f7c-6db7dd649a4c/scratchpad/t/node_modules/playwright');
+const BASE = 'http://localhost:8899', INTERN = 'intern-1e2da84950';
+(async () => {
+  const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+  const ctx = await b.newContext({ viewport: { width: 390, height: 900 }, acceptDownloads: true });
+  await ctx.route('**/fonts.googleapis.com/**', r => r.abort());
+  const errs = [];
+  const p = await ctx.newPage(); p.on('pageerror', e => errs.push('prep ' + e));
+  await p.goto(`${BASE}/${INTERN}/`);
+  await p.fill('#praktijk', 'Fysiotherapie De Égmonden'); await p.fill('#straat', 'Kennemerstraatweg 12a'); await p.fill('#postcode', '1814gb');
+  await p.fill('#plaats', 'Alkmaar'); await p.fill('#kvk', '12345678'); await p.fill('#agb', '04012345'); await p.fill('#naam', 'J.M. van der Heijden');
+  await p.click('#maak'); await p.waitForTimeout(1500);
+  console.log('zonder sleutel:', await p.locator('#fout').innerText());
+  await p.fill('#sleutel', 'verkeerd'); await p.click('#maak'); await p.waitForTimeout(1500);
+  console.log('verkeerde sleutel:', await p.locator('#fout').innerText());
+  await p.fill('#sleutel', 'testsleutel-123'); await p.dispatchEvent('#sleutel', 'change'); await p.click('#maak');
+  await p.waitForSelector('#uit:not([hidden])', { timeout: 15000 });
+  const link = await p.inputValue('#link'); console.log('link:', link, '|', await p.locator('#geldig').innerText());
+  const s = await ctx.newPage(); s.on('pageerror', e => errs.push('sign ' + e));
+  await s.goto(link); await s.waitForSelector('#formulier:not([hidden])', { timeout: 15000 });
+  console.log('gegevens:', (await s.locator('#gegevens').innerText()).replace(/\n/g, ' | '), '|', await s.locator('#geldig').innerText());
+  await s.locator('#canvas').scrollIntoViewIfNeeded(); const c = await s.locator('#canvas').boundingBox();
+  await s.mouse.move(c.x + 30, c.y + 100); await s.mouse.down();
+  for (let i = 0; i < 40; i++) await s.mouse.move(c.x + 30 + i * (c.width - 60) / 40, c.y + 90 + Math.sin(i / 3) * 40);
+  await s.mouse.up(); await s.check('#akkoord');
+  const dlP = s.waitForEvent('download', { timeout: 20000 });
+  await s.click('#verstuur'); const d = await dlP; await s.waitForTimeout(1000);
+  console.log('status:', (await s.locator('#status').innerText()).split('\n')[0], '| download:', d.suggestedFilename());
+  // tweede keer openen
+  const s2 = await ctx.newPage(); await s2.goto(link); await s2.waitForTimeout(2500);
+  console.log('tweede keer:', await s2.locator('#ondertekend').isVisible(), '| formulier:', await s2.locator('#formulier').isVisible());
+  const s3 = await ctx.newPage(); await s3.goto(`${BASE}/ledenovereenkomst/#abcdefghijklmnopqrstuvwxyz`); await s3.waitForTimeout(2500);
+  console.log('onbekend token:', await s3.locator('#ongeldig').isVisible());
+  console.log('errs:', errs);
+  await b.close();
+})();
