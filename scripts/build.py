@@ -31,7 +31,7 @@ VERSTUUR = '''    var fd = new FormData();
     }).then(function () {
       bezig = true; $("verstuur").disabled = true; $("verstuur").textContent = "Verstuurd"; $("wis").disabled = true; $("akkoord").disabled = true;
       canvas.style.pointerEvents = "none";
-      toon(["BNW heeft uw ondertekende overeenkomst ontvangen. U hoeft niets meer te doen.", "Een kopie is opgeslagen bij uw downloads als " + naam + "."], "Uw overeenkomst is ondertekend en verstuurd.", false);
+      toon(["Stuur de pdf nu per e-mail naar administratie@bnw.nl; dan weet BNW dat u heeft getekend. De pdf staat bij uw downloads als " + naam + ".", "Kwijt? Kies Download uw kopie."], "Uw overeenkomst is ondertekend. Nog \u00e9\u00e9n stap.", false);
       $("kopie").hidden = false; download();
     }).catch(function (d) {
       klaar();
@@ -65,8 +65,8 @@ START = '''/* ---------- start ---------- */
 for name, path in [('ledenovereenkomst-bnw', 'ledenovereenkomst'), ('kennismakersovereenkomst-bnw', 'kennismakersovereenkomst')]:
     s = open(f'{B}/{name}.html', encoding='utf-8').read()
     s = rep(s, 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', '/jspdf.umd.min.js')
-    s = rep(s, 'U controleert ze, leest de overeenkomst en zet uw handtekening. Daarna slaat u de ondertekende overeenkomst op als pdf.', 'U controleert ze, leest de overeenkomst en zet uw handtekening. BNW ontvangt de ondertekende overeenkomst daarna automatisch en u krijgt een kopie als pdf.')
-    s = rep(s, '<li><b>3</b>Onderteken en sla op</li>', '<li><b>3</b>Onderteken en verstuur</li>')
+    s = rep(s, 'U controleert ze, leest de overeenkomst en zet uw handtekening. Daarna slaat u de ondertekende overeenkomst op als pdf.', 'U controleert ze, leest de overeenkomst en zet uw handtekening. U krijgt de ondertekende overeenkomst als pdf en mailt die naar administratie@bnw.nl.')
+    s = rep(s, '<li><b>3</b>Onderteken en sla op</li>', '<li><b>3</b>Onderteken en mail de pdf</li>')
     s = rep(s, '<button type="submit" id="verstuur">Onderteken en sla op als pdf</button>', '<button type="submit" id="verstuur">Onderteken en verstuur</button>')
     s = rep(s, '<div class="status" id="status" role="status" aria-live="polite" hidden></div>', '<div class="status" id="status" role="status" aria-live="polite" hidden></div>\n        <div class="rij"><button type="button" class="stil" id="kopie" hidden>Download uw kopie</button></div>')
     s = rep(s, 'toon(["Uw pdf wordt gemaakt. Bevestig daarna het opslaan."], null, false);', 'toon(["Uw overeenkomst wordt verstuurd naar BNW. Een moment."], null, false);')
