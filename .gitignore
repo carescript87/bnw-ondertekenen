@@ -1,6 +1,5 @@
 .netlify
 node_modules
-site
 .env
 bron/*-bnw.html
 bron/bnw-ondertekenlinks.html
